@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, parse_obj_as, ValidationError
 import requests
 
+from postgres_interface import connect, find_recipes_paged
+
 
 class Token(BaseModel):
     type: int | None = None
@@ -63,6 +65,12 @@ app.add_middleware(
 @app.get("/api/hello_world")
 def hello_world():
     return "Hello world"
+
+
+@app.get("/api/recipes")
+async def get_all_recipes(offset: int = 0, limit: int = 10):
+    cursor = connect()
+    return find_recipes_paged(cursor, offset, limit)
 
 
 @app.get("/api/recipe/{recipe_id}")
