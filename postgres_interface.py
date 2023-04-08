@@ -50,14 +50,27 @@ def find_paged(base_query, serverParams, mapper_func):
 SQL_FIND_RECIPES = """
     select 
         recipe_data->>'title',
-        recipe_data->>'description'
+        recipe_data->>'description',
+        recipe_data->>'author',
+        recipe_data->>'image-link',
+        recipe_data->>'servings',
+        recipe_data->>'prep-time',
+        recipe_data->>'cook-time'
     from "recipe-schema".recipes
     order by recipe_data->>'title'
 """
 
 
 def create_recipe(rs):
-    return {"title": rs[0], "description": rs[1]}
+    return {
+        "title": rs[0],
+        "description": rs[1],
+        "author": rs[2],
+        "image-link": rs[3],
+        "servings": rs[4],
+        "prep-time": rs[5],
+        "cook-time": rs[6],
+    }
 
 
 def find_recipes_paged(serverParams):
