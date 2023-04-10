@@ -3,3 +3,4 @@ fastapi
 black
 uvicorn[standard]
 psycopg2
+spacy

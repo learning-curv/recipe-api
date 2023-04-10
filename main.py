@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, parse_obj_as, ValidationError
 import requests
 
-from postgres_interface import find_recipes_paged
+from postgres_interface import find_recipes_paged, find_all_ingredients
 
 
 class Token(BaseModel):
@@ -70,6 +70,10 @@ def hello_world():
 @app.get("/api/recipes")
 async def get_all_recipes(offset: int = 0, limit: int = 10):
     return find_recipes_paged({"offset": offset, "limit": limit})
+
+@app.get("/api/recipes/cook/{user_id}")
+async def get_all_ingredients(user_id: str, threshold: float = 0):
+    return find_all_ingredients(user_id, 1 - threshold)
 
 
 @app.get("/api/recipe/{recipe_id}")
